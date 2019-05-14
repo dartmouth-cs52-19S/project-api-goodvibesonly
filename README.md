@@ -8,6 +8,7 @@ The backend API for the Vibes app.
 ## Architecture
 
 TODO:  descriptions of code organization and tools and libraries used
+used bcrypt
 
 ## Setup
 
