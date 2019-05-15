@@ -1,5 +1,3 @@
-
-
 import Playlist from '../models/playlist_model';
 
 export const createPlaylist = (req, res) => {
@@ -7,7 +5,7 @@ export const createPlaylist = (req, res) => {
   const playlist = new Playlist();
   playlist.title = req.body.title;
   post.author = req.user.username;
-//   playlist.songs= unsure
+  //   playlist.songs= unsure
 
   platlist.save()
     .then((result) => {
@@ -17,8 +15,8 @@ export const createPlaylist = (req, res) => {
       res.status(500).json({ error });
     });
 };
-//realizing this is obviously not going to be correct
-//bc we need location services
+// realizing this is obviously not going to be correct
+// bc we need location services
 export const getPlaylists = (req, res) => {
   Playlist.find({})
     .then((result) => {
@@ -51,7 +49,7 @@ export const deletePlaylist = (req, res) => {
 export const updatePlayist = (req, res) => {
   Playlist.findById(req.params.id)
     .then((result) => {
-      //assign things
+      // assign things
       result.save();
     })
     .then((result) => {

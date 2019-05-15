@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 // create a UserSchema with a title field
 const UserSchema = new Schema({
-  email: { type: String, unique: true, lowercase: true },
+  id: { type: String, unique: true, lowercase: true },
   password: { type: String },
   username: { type: String },
 },
