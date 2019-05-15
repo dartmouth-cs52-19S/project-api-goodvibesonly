@@ -6,8 +6,8 @@
 The backend API for the Vibes app.
 
 ## Architecture
-mongoDB backend
-used bcrypt and JWT
+* mongoDB backend
+* used bcrypt and JWT
 
 TODO:  add descriptions of code organization and additional tools and libraries used in the future
 
