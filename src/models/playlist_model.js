@@ -15,3 +15,9 @@ const PlaylistSchema = new Schema({
       virtuals: true,
     },
   });
+
+  // create UserModel class from schema
+const PlaylistModel = mongoose.model('Playlist', UserSchema);
+
+
+export default PlaylistModel;
