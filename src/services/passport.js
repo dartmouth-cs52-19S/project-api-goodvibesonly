@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
