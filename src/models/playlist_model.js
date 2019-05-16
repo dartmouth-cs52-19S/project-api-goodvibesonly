@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import bcrypt from 'bcryptjs';
+// import bcrypt from 'bcryptjs';
 
 
 const PlaylistSchema = new Schema({
@@ -17,7 +17,7 @@ const PlaylistSchema = new Schema({
 });
 
 // create UserModel class from schema
-const PlaylistModel = mongoose.model('Playlist', UserSchema);
+const PlaylistModel = mongoose.model('Playlist', PlaylistSchema);
 
 
 export default PlaylistModel;
