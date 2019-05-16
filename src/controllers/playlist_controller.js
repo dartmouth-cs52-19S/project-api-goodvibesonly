@@ -4,10 +4,10 @@ export const createPlaylist = (req, res) => {
 //   res.send('in the method');
   const playlist = new Playlist();
   playlist.title = req.body.title;
-  post.author = req.user.username;
+  playlist.author = req.user.username;
   //   playlist.songs= unsure
 
-  platlist.save()
+  playlist.save()
     .then((result) => {
       res.json({ message: 'Playlist created!' });
     })
