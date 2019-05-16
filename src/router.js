@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as UserController from './controllers/user_controller';
-import { /* requireAuth, */ requireSignin } from './services/passport';
+// import { /* requireAuth, */ requireSignin } from './services/passport';
 
 const router = Router();
 
@@ -9,7 +9,6 @@ router.get('/', (req, res) => {
 });
 
 // your routes will go here
-router.post('/signin', requireSignin, UserController.signin);
-router.post('/signup', UserController.signup);
+router.post('/signin', UserController.signin);
 
 export default router;
