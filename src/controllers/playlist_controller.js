@@ -1,5 +1,4 @@
 import axios from 'axios';
-import jQuery from 'jquery';
 import Playlist from '../models/playlist_model';
 
 const API_SEARCH_URL = 'https://api.spotify.com/v1/search';
@@ -69,13 +68,6 @@ export const createPlaylist = (req, res) => {
   return new Promise((resolve, reject) => {
     axios.get(`${API_PLAYLIST_URL}/${req.params.playlistid}/tracks`, { params })
       .then((response) => {
-        // actually need to cycle through each track & add id to playlist but how tf do i do that
-        // eslint-disable-next-line no-unused-expressions
-        // eslint-disable-next-line func-names
-        jQuery.each(response.data.track, (key, _value) => {
-          const newList = playlist.state.songs.concat(key.track.id);
-          playlist.setState({ songs: newList });
-        });
       })
       .catch((error) => {
         console.log(`spotify api error: ${error}`);
