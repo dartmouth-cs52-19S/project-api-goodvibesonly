@@ -1,4 +1,28 @@
+import axios from 'axios';
 import Playlist from '../models/playlist_model';
+
+const API_SEARCH_URL = 'https://api.spotify.com/v1/search';
+const API_KEY = '9d4dc8d26d874e62a8fd2168be45d121';
+
+export const getPlaylists = (req, res) => {
+  const params = {
+    part: 'snippet',
+    key: API_KEY,
+    q: req.params.genre, // call it genre?
+    type: 'playlist',
+  };
+
+  return new Promise((resolve, reject) => {
+    axios.get(API_SEARCH_URL, { params })
+      .then((response) => {
+        resolve(response.data.items);
+      })
+      .catch((error) => {
+        console.log(`spotify api error: ${error}`);
+        reject(error);
+      });
+  });
+};
 
 export const createPlaylist = (req, res) => {
 //   res.send('in the method');
@@ -7,25 +31,19 @@ export const createPlaylist = (req, res) => {
   playlist.author = req.user.username;
   //   playlist.songs= unsure
 
-  playlist.save()
-    .then((result) => {
-      res.json({ message: 'Playlist created!' });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
+  // Create a private playlist
+  spotifyApi.createPlaylist(req.body.title, { public: true })
+    .then((data) => {
+      console.log(`Created playlist! ${data}`);
+    }, (err) => {
+      console.log('Something went wrong!', err);
     });
 };
+// Q: this creates it on the user's actual spotify account. Do we want to do
+// this or do we want to use our own data structure?
+
 // realizing this is obviously not going to be correct
 // bc we need location services
-export const getPlaylists = (req, res) => {
-  Playlist.find({})
-    .then((result) => {
-      res.json({ result });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
-};
 
 export const getPlaylist = (req, res) => {
   Playlist.findById(req.params.id)
