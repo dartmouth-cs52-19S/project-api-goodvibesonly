@@ -5,15 +5,42 @@ const API_SEARCH_URL = 'https://api.spotify.com/v1/search';
 const API_KEY = '9d4dc8d26d874e62a8fd2168be45d121';
 const API_PLAYLIST_URL = 'https://api.spotify.com/v1/playlists';
 
-// ----------------------MONGO DB RELATED FUNCTIONS---------------------------//
+export const deletePlaylist = (req, res) => {
+  Playlist.findByIdAndDelete(req.params.id)
+    .then((result) => {
+      res.json({ message: 'Playlist deleted!' });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
 
 export const getPlaylists = (req, res) => {
-  Playlist.find().lean().then((playlists) => {
-    res.json({ playlists });
-  }).catch((error) => {
-    res.json({ error: error.message });
-  });
+  Playlist.find({})
+    .then((result) => {
+      res.json({ result });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
+
+export const getPlaylist = (req, res) => {
+  Playlist.findById(req.params.id)
+    .then((result) => {
+      res.json((result));
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+export const getPlaylistsFromGenre = (req, res) => {
+  const params = {
+    key: API_KEY,
+    q: req.params.genre, // call it genre?
+    type: 'playlist',
+  };
 
 export const getPlaylist = (req, res) => {
   Playlist.findById(req.params.id).lean().populate('author').then((playlist) => {
