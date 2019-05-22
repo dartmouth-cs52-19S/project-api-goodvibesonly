@@ -1,5 +1,5 @@
 import axios from 'axios';
-import jQuery from 'jquery';
+
 import Playlist from '../models/playlist_model';
 
 const API_SEARCH_URL = 'https://api.spotify.com/v1/search';
@@ -56,4 +56,14 @@ export const createPlaylist = (req, res) => {
       });
   });
   // Create a private playlist
+};
+
+export const addSong = (req, res) => {
+  Playlist.findById(req.params.playlistId)
+    .then((result) => {
+      result.songs.push(req.params.spotifyID);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
