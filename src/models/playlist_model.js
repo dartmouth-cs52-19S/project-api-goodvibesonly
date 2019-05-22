@@ -8,7 +8,8 @@ const PlaylistSchema = new Schema({
   songs: [{
     songid: String,
   }],
-  id: '',
+  spotifyId: { type: String },
+  location: { type: Array },
 },
 {
   toJSON: {
