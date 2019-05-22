@@ -32,12 +32,6 @@ export const createPlaylist = (req, res) => {
   //   playlist.songs= unsure
 
   // Create a private playlist
-  spotifyApi.createPlaylist(req.body.title, { public: true })
-    .then((data) => {
-      console.log(`Created playlist! ${data}`);
-    }, (err) => {
-      console.log('Something went wrong!', err);
-    });
 };
 // Q: this creates it on the user's actual spotify account. Do we want to do
 // this or do we want to use our own data structure?
