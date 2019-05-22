@@ -61,13 +61,14 @@ export const createPlaylist = (req, res) => {
   //   playlist.songs= unsure
 
   const params = {
-    key: API_KEY,
-    limit: 5,
+    limit: 15,
   };
-
+  // items[]track.id
   return new Promise((resolve, reject) => {
-    axios.get(`${API_PLAYLIST_URL}/${req.params.playlistid}/tracks`, { params })
+    axios.get(`${API_PLAYLIST_URL}/${req.params.playlistid}/tracks`, { headers: { authorization: 'BQBJSlfhZJQODsxWsQRmNC6F7DFXZkVQxPrCPlYuyUx5BWc00WgZWSEG9Pa2JcxC0yS6aZ5-w5pWFs7PY8WpBOMptbPhtMfwsRKKUpnJt1P924WdLslHBl4Lu6K9LeygjPtUzAMraCVuWCuBVjQ' } }, { params })
       .then((response) => {
+        const firstSeeds = response.items;
+        firstSeeds.map((song, key) => playlist.songs.push(song.track.id));
       })
       .catch((error) => {
         console.log(`spotify api error: ${error}`);
