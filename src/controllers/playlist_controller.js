@@ -75,15 +75,21 @@ export const createPlaylist = (req, res) => {
         jQuery.each(response.data.track, (key, _value) => {
           const newList = playlist.state.songs.concat(key.track.id);
           playlist.setState({ songs: newList });
-          resolve(playlist);
         });
       })
       .catch((error) => {
         console.log(`spotify api error: ${error}`);
         reject(error);
       });
-  });
 
+    playlist.save()
+      .then((result) => {
+        res.json({ message: 'Playlist created!' });
+      })
+      .catch((error) => {
+        res.status(500).json({ error });
+      });
+  });
   // Create a private playlist
 };
 
