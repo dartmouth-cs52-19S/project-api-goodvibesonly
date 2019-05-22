@@ -88,10 +88,13 @@ export const createPlaylist = (req, res) => {
 };
 
 export const addSong = (req, res) => {
-  // Adds a spotify track id to a playlist in our mongo DB
-  // Data in req:
-  // - req.params.playlistid
-  // - req.body.trackId
+  Playlist.findById(req.params.playlistid)
+    .then((result) => {
+      result.songs.push(req.params.trackId);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 // ------------------- SPOTIFY API RELATED FUNCTIONS ------------------------ //
