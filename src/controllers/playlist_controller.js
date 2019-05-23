@@ -2,7 +2,7 @@ import axios from 'axios';
 import Playlist from '../models/playlist_model';
 
 const API_SEARCH_URL = 'https://api.spotify.com/v1/search';
-const API_KEY = '9d4dc8d26d874e62a8fd2168be45d121';
+
 const API_PLAYLIST_URL = 'https://api.spotify.com/v1/playlists';
 const API_PLAYER_URL = 'https://api.spotify.com/v1/me/player';
 const token = 'Bearer BQCCiW2xxvjz8gVFyf_9T7HB8ekzsh0PAjn44_Uu0MUmO30N-y4pNKw7jfeYdeoRKFoXAhY9OCiXH23vfS_rPqcRK33JM10K4HZ12bQM70cCFQ1K-ckFkjyUGWSZZN9_MQxOMfBJGpQQPmLPecxnnJWIJjq6nLykQXp4K2w8';
