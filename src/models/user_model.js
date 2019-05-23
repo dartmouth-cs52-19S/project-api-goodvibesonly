@@ -2,7 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 
 // create a UserSchema with a title field
 const UserSchema = new Schema({
-  id: { type: String, unique: true, lowercase: true },
+  code: { type: String, unique: true },
+  token: { type: String, unique: true },
 },
 {
   toJSON: {

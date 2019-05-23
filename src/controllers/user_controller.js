@@ -1,23 +1,17 @@
 /* eslint-disable camelcase */
+// eslint-disable-next-line no-unused-vars
 import dotenv from 'dotenv';
+import User from '../models/user_model';
 // import jwt from 'jwt-simple';
-// import User from '../models/user_model';
 
 dotenv.config({ silent: true });
-
-// and then the secret is usable this way: process.env.AUTH_SECRET;
 
 /* Commented out for now, as we don't have this stage fully set up; encodes a new token for a user object
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
 }
-*/
-
-// eslint-disable-next-line no-unused-vars
-/* const client_id = 'b4a7ad189bdb424aad1d1a4773a6ddf6'; // Your client id
 const client_secret = 'e9dc54316afb430b986542e2b431b6a0'; // Your secret
-const redirect_uri = 'http://danah-blog.surge.sh/'; // Your redirect uri
 const querystring = require('querystring');
 const spClientCallback = 'http://danah-blog.surge.sh/';
 const spotifyEndpoint = 'https://accounts.spotify.com/api/token';
@@ -39,13 +33,27 @@ export const signinDanah = (req, res, next) => {
   res.send({ message: 'you have successfully signed into good vibes!' });
 };
 
+const getToken = (req, res, next) => {
+
+};
+
 export const auth = (req, res, next) => {
+  // this is authentication for a new user
+  // TODO: handle processes for returning users
   const code = req.query.code || null;
   const state = req.query.state || null;
 
-  // sendFile adapted from https://stackoverflow.com/questions/20345936/nodejs-send-html-file-to-client
-  // this code sends a new file to be rendered on the frontend
-  res.send({ message: { the_code: code, the_state: state } }).next().sendFile('views/redirect.html', { root: __dirname });
+  const user = new User();
+  user.code = code;
+
+  user.save()
+    .then(() => {
+      getToken();
+      res.json({ message: 'User created and code saved to user' });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 export const signup = (req, res, next) => {
