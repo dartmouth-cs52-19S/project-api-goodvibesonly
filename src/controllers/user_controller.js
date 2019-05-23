@@ -37,22 +37,13 @@ export const signin = (req, res, next) => {
 
 export const signinDanah = (req, res, next) => {
   res.send({ message: 'you have successfully signed into good vibes!' });
-  // your application requests authorization
-  /*
-  const scope = 'user-read-private user-read-email';
-  res.redirect(`https://accounts.spotify.com/authorize?${
-    querystring.stringify({
-      response_type: 'code',
-      client_id,
-      scope,
-      redirect_uri,
-      // state, maybe we don't need state, tbd
-    })}`); */
 };
 
-
 export const auth = (req, res, next) => {
-  res.send({ message: 'AUTH!' });
+  const code = req.query.code || null;
+  const state = req.query.state || null;
+
+  res.send({ message: { the_code: code, the_state: state } });
 };
 
 export const signup = (req, res, next) => {
