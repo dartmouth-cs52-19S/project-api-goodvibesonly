@@ -23,6 +23,7 @@ const request = require('request'); // "Request" library
 // const querystring = require('querystring'); // "querystring" library
 
 const stateKey = 'spotify_auth_state'; // from the web-api-auth-example
+let localAccessToken;
 
 export const signin = (req, res, next) => {
   const scopes = 'user-read-private user-read-email';
@@ -80,6 +81,7 @@ export const auth = (req, res, next) => {
     const user = new User();
     user.access_token = body.access_token;
     user.refresh_token = body.refresh_token;
+    localAccessToken = body.access_token;
 
     user.save().then(() => {
       res.json({ message: 'User created with tokens saved to user' });
@@ -89,6 +91,11 @@ export const auth = (req, res, next) => {
     // }
   });
   // }
+};
+
+// New get method
+export const getAuth = (req, res) => {
+  res.json({ localAccessToken });
 };
 
 /*
