@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 // eslint-disable-next-line no-unused-vars
 import dotenv from 'dotenv';
+import axios from 'axios';
 import User from '../models/user_model';
 // import jwt from 'jwt-simple';
 
@@ -19,6 +20,7 @@ const spotifyEndpoint = 'https://accounts.spotify.com/api/token';
 const client_id = 'b4a7ad189bdb424aad1d1a4773a6ddf6'; // Your client id
 const client_secret = 'e9dc54316afb430b986542e2b431b6a0'; // Your secret
 const redirect_uri = 'https://good-vibes-only.herokuapp.com/api/auth'; // Your redirect uri
+const user_profile_url = 'https://api.spotify.com/v1/me';
 const request = require('request'); // "Request" library
 // const querystring = require('querystring'); // "querystring" library
 
@@ -83,14 +85,19 @@ export const auth = (req, res, next) => {
     user.refresh_token = body.refresh_token;
     localAccessToken = body.access_token;
 
-    user.save().then(() => {
-      res.redirect(`${redirect_uri}/done?message=authSuccess?token=${body.access_token}`);
-    }).catch((error_message) => {
-      res.redirect(`${redirect_uri}/done?message=authFailure`);
+    axios.get(`${user_profile_url}`, { headers: { authorization: `Bearer ${body.access_token}` } }).then((resp) => {
+      user.spotifyId = resp.data.id;
+
+      user.save().then(() => {
+        console.log(user._id);
+        res.redirect(`${redirect_uri}/done?message=authSuccess?token=${body.access_token}`);
+      }).catch((error_message) => {
+        res.redirect(`${redirect_uri}/done?message=authFailure`);
+      });
+    }).catch((err) => {
+      console.log(err);
     });
-    // }
   });
-  // }
 };
 
 // New get method
