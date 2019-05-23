@@ -43,8 +43,8 @@ export const activatePlaylist = (req, res) => {
   // - req.params.lng
   // - req.params.id
   Playlist.findById(req.params.id).lean().populate('author').then((playlist) => {
-    playlist.location.push(req.params.lat);
-    playlist.location.push(req.params.long);
+    playlist.location.push(req.body.lat);
+    playlist.location.push(req.body.long);
   })
     .catch((error) => {
       res.json({ error: error.message });
