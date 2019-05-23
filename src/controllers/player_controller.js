@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_PLAYER_URL = 'https://api.spotify.com/v1/me/player';
-const token = 'Bearer BQANZ0wlxkL2BbutjiFxNJ-fUXkgI41JvFRSc5EMIsUOfqwliothX8ivnlMZ6zsUNuYYEmSN9FMx0Q_J1n4X2KqodotaACDfRziQ9iBpMh8-jg0FPdjT9G33ZlcftIinrelIqc9VhXQ8rfrivnh1w12ULgdYMtV2c-RyOTKQsa2lyq7OM5xhjyzySEpPsq3cbTtdoPLMKfUy2GNkkwYeC2TfGQmoAIbUJBzzmFlDG-BB9E1IThucVoKUB_dJkN2hIwXWlqQaYrB7NwcFG8H7mHQ';
+const token = 'Bearer BQCJHZcRKBvzOdN1yMkckvUyYgOD1BGf9pBlGVoDF0hqS3tbPlgPY295gnZhYT5pZVCG3yoBGszynxpDaK3V55lVYAdEfj9aEcJiKQysN4n36zaVUNo6BCmCClRBOSolUewISls5CGO54cGonLIJGeGZTzEhAswHL1NAZOWWkdoCj8hkCWDuRJylzYF-ZxStm9yuG6FMgRfBCb8VnD2zORSUsdJq-M8LUOTwZxLexsNbuaXnPEii_kBxczGGI6zdl48UvDyLuQZC1RHAltwiR1E';
 
 export const getPlayState = (req, res) => {
   axios.get(`${API_PLAYER_URL}/currently-playing`, { headers: { authorization: token } })
