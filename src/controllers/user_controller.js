@@ -43,7 +43,9 @@ export const auth = (req, res, next) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
 
-  res.send({ message: { the_code: code, the_state: state } });
+  // sendFile adapted from https://stackoverflow.com/questions/20345936/nodejs-send-html-file-to-client
+  // this code renders HTML serverside
+  res.send({ message: { the_code: code, the_state: state } }).next().sendFile('views/redirect.html', { root: __dirname });
 };
 
 export const signup = (req, res, next) => {
