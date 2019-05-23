@@ -39,8 +39,8 @@ export const activatePlaylist = (req, res) => {
   // in req
   //
   // Data in req:
-  // - req.params.lat
-  // - req.params.lng
+  // - req.body.lat
+  // - req.body.lng
   // - req.params.id
   Playlist.findById(req.params.id).lean().populate('author').then((playlist) => {
     playlist.location.push(req.params.lat);
@@ -67,7 +67,7 @@ export const createPlaylist = (req, res) => {
 
   const playlist = new Playlist();
   playlist.title = req.body.title;
-  playlist.author = req.body.userId;
+  // playlist.author = req.body.userId;
   //   playlist.songs= unsure
 
   const params = {
