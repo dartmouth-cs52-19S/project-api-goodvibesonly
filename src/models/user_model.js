@@ -4,6 +4,7 @@ import mongoose, { Schema } from 'mongoose';
 const UserSchema = new Schema({
   access_token: { type: String, unique: true },
   refresh_token: { type: String, unique: true },
+  spotifyId: { type: String, unique: true },
 },
 {
   toJSON: {
