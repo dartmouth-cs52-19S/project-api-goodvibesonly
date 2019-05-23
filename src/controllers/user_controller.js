@@ -20,6 +20,9 @@ const client_id = 'b4a7ad189bdb424aad1d1a4773a6ddf6'; // Your client id
 const client_secret = 'e9dc54316afb430b986542e2b431b6a0'; // Your secret
 const redirect_uri = 'https://good-vibes-only.herokuapp.com/api'; // Your redirect uri
 const request = require('request'); // "Request" library
+const querystring = require('querystring'); // "querystring" library
+
+const stateKey = 'spotify_auth_state'; // from the web-api-auth-example
 
 export const signin = (req, res, next) => {
   const scopes = 'user-read-private user-read-email';
@@ -38,37 +41,48 @@ export const auth = (req, res, next) => {
   // this is authentication for a new user
   // TODO: handle processes for returning users
   const code = req.query.code || null;
+  const state = req.query.state || null;
+  const storedState = req.cookies ? req.cookies[stateKey] : null;
 
-  const authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    form: {
-      code,
-      redirect_uri,
-      grant_type: 'authorization_code',
-    },
-    headers: {
+  if (state === null || state !== storedState) {
+    res.redirect(`/#${
+      querystring.stringify({
+        error: 'state_mismatch',
+      })}`);
+  } else {
+    res.clearCookie(stateKey);
+
+    const authOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      form: {
+        code,
+        redirect_uri,
+        grant_type: 'authorization_code',
+      },
+      headers: {
       // eslint-disable-next-line no-buffer-constructor
-      Authorization: `Basic ${new Buffer(`${client_id}:${client_secret}`).toString('base64')}`,
-    },
-    json: true,
-  };
+        Authorization: `Basic ${new Buffer(`${client_id}:${client_secret}`).toString('base64')}`,
+      },
+      json: true,
+    };
 
-  request.post(authOptions, (error, response, body) => {
-    // if (!error && response.statusCode === 200) {
-    console.log('ACCESS');
-    console.log(body.access_token);
-    console.log('REFRESH', body.refresh_token);
-    const user = new User();
-    user.access_token = 'body.access_token';
-    user.refresh_token = 'body.refresh_token';
+    request.post(authOptions, (error, response, body) => {
+      if (!error && response.statusCode === 200) {
+        console.log('ACCESS');
+        console.log(body.access_token);
+        console.log('REFRESH', body.refresh_token);
+        const user = new User();
+        user.access_token = 'body.access_token';
+        user.refresh_token = 'body.refresh_token';
 
-    user.save().then(() => {
-      res.json({ message: 'User created with tokens saved to user' });
-    }).catch((error_message) => {
-      res.status(500).json({ error_message });
+        user.save().then(() => {
+          res.json({ message: 'User created with tokens saved to user' });
+        }).catch((error_message) => {
+          res.status(500).json({ error_message });
+        });
+      }
     });
-    // }
-  });
+  }
 };
 
 /*
