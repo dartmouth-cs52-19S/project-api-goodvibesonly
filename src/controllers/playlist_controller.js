@@ -70,32 +70,34 @@ export const createPlaylist = (req, res) => {
   const playlist = new Playlist();
   playlist.title = req.body.title;
   // playlist.author = req.body.userId;
-  //   playlist.songs= unsure
 
   const params = {
-    limit: 15,
+    limit: 5,
   };
   // items[]track.id
-  return new Promise((resolve, reject) => {
-    axios.get(`${API_PLAYLIST_URL}/${req.params.playlistid}/tracks`, { headers: { authorization: 'BQDJGwuXR34oWrBMH5wkQ3KNaUhaumSDYUwtfjEzfrgY5S86a0jkAJBrbicE4BdQpgS0HYxZ8do6yDoXUGovfQoqNGLwwOHrXo-i4o10DF5nwANe8LW7GgfosReUmqtru5VNynz54XAxT7RD6yQ' } }, { params })
-      .then((response) => {
-        const firstSeeds = response.items;
-        firstSeeds.map((song, key) => playlist.songs.push(song.track.id));
-      })
-      .catch((error) => {
-        console.log(`spotify api error: ${error}`);
-        reject(error);
+  axios.get(`${API_PLAYLIST_URL}/${req.body.spotifyId}/tracks`, { headers: { authorization: 'Bearer BQDUenMAQyIkiPCCtuYehGIqSAZEFzeG8wzWcHAxfT3u73-HDpc7O7Bh68ZicWDPhQRIU3ejr1QFDELroI5A1UPooM5cEtE_uWAg7XAdl6vFvI8JQ_By6sZkmOe8tFNFIEVBRRevGPe7PxxTrw' } }, { params })
+    .then((response) => {
+      const firstSeeds = response.data.items;
+      console.log(response.data.items[0].track.id);
+      firstSeeds.map((song, key) => {
+        return playlist.songs.push({ songid: song.track.id });
       });
 
-    playlist.save()
-      .then((result) => {
-        res.json({ message: 'Playlist created!' });
-      })
-      .catch((error) => {
-        res.status(500).json({ error });
-      });
-  });
-  // Create a private playlist
+      console.log('songs', playlist.songs[0]);
+      console.log('songs logged');
+
+      playlist.save()
+        .then((result) => {
+          res.json({ message: 'Playlist created!', song: playlist.songs[0].songid });
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(500).json({ error });
+        });
+    })
+    .catch((error) => {
+      console.log(`spotify api error: ${error}`);
+    });
 };
 
 export const addSong = (req, res) => {
