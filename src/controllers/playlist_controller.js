@@ -2,7 +2,7 @@ import axios from 'axios';
 import Playlist from '../models/playlist_model';
 
 const API_SEARCH_URL = 'https://api.spotify.com/v1/search';
-const API_KEY = '9d4dc8d26d874e62a8fd2168be45d121';
+
 const API_PLAYLIST_URL = 'https://api.spotify.com/v1/playlists';
 const API_PLAYER_URL = 'https://api.spotify.com/v1/me/player';
 const token = 'Bearer BQCCiW2xxvjz8gVFyf_9T7HB8ekzsh0PAjn44_Uu0MUmO30N-y4pNKw7jfeYdeoRKFoXAhY9OCiXH23vfS_rPqcRK33JM10K4HZ12bQM70cCFQ1K-ckFkjyUGWSZZN9_MQxOMfBJGpQQPmLPecxnnJWIJjq6nLykQXp4K2w8';
@@ -115,21 +115,19 @@ export const addSong = (req, res) => {
 // Fetches playlists from Spotify API based on query word
 export const getPlaylistsFromSpotify = (req, res) => {
   const params = {
-    key: API_KEY,
-    q: req.params.query, // call it genre?
+    q: req.body.query, // call it genre?
     type: 'playlist',
   };
-
-  return new Promise((resolve, reject) => {
-    axios.get(API_SEARCH_URL, { params })
-      .then((response) => {
-        resolve(response.data.items);
-      })
-      .catch((error) => {
-        console.log(`spotify api error: ${error}`);
-        reject(error);
-      });
-  });
+  let playlists;
+  axios.get(API_SEARCH_URL, { headers: { authorization: 'BQDJGwuXR34oWrBMH5wkQ3KNaUhaumSDYUwtfjEzfrgY5S86a0jkAJBrbicE4BdQpgS0HYxZ8do6yDoXUGovfQoqNGLwwOHrXo-i4o10DF5nwANe8LW7GgfosReUmqtru5VNynz54XAxT7RD6yQ' } }, { params })
+    .then((response) => {
+      response.data.items.map((playlist, key) => playlists.push({ id: playlist.id, title: playlist.name }));
+      res.json(playlists);
+    })
+    .catch((error) => {
+      console.log(`spotify api error: ${error}`);
+      res.send(error);
+    });
 };
 
 // Fetches tracks from Spotify API based on the track spotify // id
@@ -140,7 +138,7 @@ export const getTrackFromSpotify = (req, res) => {
   return new Promise((resolve, reject) => {
     axios.get(`${API_TRACK_URL}/${req.params.id}`, { headers: { authorization: 'BQDJGwuXR34oWrBMH5wkQ3KNaUhaumSDYUwtfjEzfrgY5S86a0jkAJBrbicE4BdQpgS0HYxZ8do6yDoXUGovfQoqNGLwwOHrXo-i4o10DF5nwANe8LW7GgfosReUmqtru5VNynz54XAxT7RD6yQ' } })
       .then((response) => {
-        res.json(response);
+        res.json(response.data.id);
       })
       .catch((error) => {
         console.log(`spotify api error: ${error}`);
