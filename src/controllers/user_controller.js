@@ -20,7 +20,7 @@ const client_id = 'b4a7ad189bdb424aad1d1a4773a6ddf6'; // Your client id
 const client_secret = 'e9dc54316afb430b986542e2b431b6a0'; // Your secret
 const redirect_uri = 'https://good-vibes-only.herokuapp.com/api/auth'; // Your redirect uri
 const request = require('request'); // "Request" library
-const querystring = require('querystring'); // "querystring" library
+// const querystring = require('querystring'); // "querystring" library
 
 const stateKey = 'spotify_auth_state'; // from the web-api-auth-example
 
@@ -41,8 +41,8 @@ export const auth = (req, res, next) => {
   // this is authentication for a new user
   // TODO: handle processes for returning users
   const code = req.query.code || null;
-  const state = req.query.state || null;
-  const storedState = req.cookies ? req.cookies[stateKey] : null;
+  // const state = req.query.state || null;
+  // const storedState = req.cookies ? req.cookies[stateKey] : null;
 
   /* if (state === null || state !== storedState) {
     res.redirect(`/#${
