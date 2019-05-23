@@ -67,20 +67,26 @@ export const auth = (req, res, next) => {
   };
 
   request.post(authOptions, (error, response, body) => {
-    if (!error && response.statusCode === 200) {
-      console.log('ACCESS');
-      console.log(body.access_token);
-      console.log('REFRESH', body.refresh_token);
-      const user = new User();
-      user.access_token = body.access_token;
-      user.refresh_token = body.refresh_token;
+    // if (!error && response.statusCode === 200) {
+    console.log('RESPONSE');
+    console.log(response);
+    console.log('RESPONSE STATUS CODE');
+    console.log(response.statusCode);
+    console.log('BODY');
+    console.log(body);
+    console.log('ACCESS');
+    console.log(body.access_token);
+    console.log('REFRESH', body.refresh_token);
+    const user = new User();
+    user.access_token = body.access_token;
+    user.refresh_token = body.refresh_token;
 
-      user.save().then(() => {
-        res.json({ message: 'User created with tokens saved to user' });
-      }).catch((error_message) => {
-        res.status(500).json({ error_message });
-      });
-    }
+    user.save().then(() => {
+      res.json({ message: 'User created with tokens saved to user' });
+    }).catch((error_message) => {
+      res.status(500).json({ error_message });
+    });
+    // }
   });
   // }
 };
