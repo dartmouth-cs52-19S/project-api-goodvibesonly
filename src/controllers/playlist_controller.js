@@ -113,21 +113,19 @@ export const addSong = (req, res) => {
 // Fetches playlists from Spotify API based on query word
 export const getPlaylistsFromSpotify = (req, res) => {
   const params = {
-    key: API_KEY,
-    q: req.params.query, // call it genre?
+    q: req.body.query, // call it genre?
     type: 'playlist',
   };
-
-  return new Promise((resolve, reject) => {
-    axios.get(API_SEARCH_URL, { params })
-      .then((response) => {
-        resolve(response.data.items);
-      })
-      .catch((error) => {
-        console.log(`spotify api error: ${error}`);
-        reject(error);
-      });
-  });
+  let playlists;
+  axios.get(API_SEARCH_URL, { headers: { authorization: 'BQDJGwuXR34oWrBMH5wkQ3KNaUhaumSDYUwtfjEzfrgY5S86a0jkAJBrbicE4BdQpgS0HYxZ8do6yDoXUGovfQoqNGLwwOHrXo-i4o10DF5nwANe8LW7GgfosReUmqtru5VNynz54XAxT7RD6yQ' } }, { params })
+    .then((response) => {
+      response.data.items.map((playlist, key) => playlists.push({ id: playlist.id, title: playlist.name }));
+      res.json(playlists);
+    })
+    .catch((error) => {
+      console.log(`spotify api error: ${error}`);
+      res.send(error);
+    });
 };
 
 // Fetches tracks from Spotify API based on the track spotify // id
@@ -138,7 +136,7 @@ export const getTrackFromSpotify = (req, res) => {
   return new Promise((resolve, reject) => {
     axios.get(`${API_TRACK_URL}/${req.params.id}`, { headers: { authorization: 'BQDJGwuXR34oWrBMH5wkQ3KNaUhaumSDYUwtfjEzfrgY5S86a0jkAJBrbicE4BdQpgS0HYxZ8do6yDoXUGovfQoqNGLwwOHrXo-i4o10DF5nwANe8LW7GgfosReUmqtru5VNynz54XAxT7RD6yQ' } })
       .then((response) => {
-        res.json(response);
+        res.json(response.data.id);
       })
       .catch((error) => {
         console.log(`spotify api error: ${error}`);
