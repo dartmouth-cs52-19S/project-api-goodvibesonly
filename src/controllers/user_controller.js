@@ -54,20 +54,20 @@ export const auth = (req, res, next) => {
   };
 
   request.post(authOptions, (error, response, body) => {
-    if (!error && response.statusCode === 200) {
-      const { access_token } = body;
-      const { refresh_token } = body;
+    // if (!error && response.statusCode === 200) {
+    const { access_token } = body;
+    const { refresh_token } = body;
 
-      const user = new User();
-      user.access_token = access_token;
-      user.refresh_token = refresh_token;
+    const user = new User();
+    user.access_token = access_token;
+    user.refresh_token = refresh_token;
 
-      user.save().then(() => {
-        res.json({ message: 'User created with tokens saved to user' });
-      }).catch((error_message) => {
-        res.status(500).json({ error_message });
-      });
-    }
+    user.save().then(() => {
+      res.json({ message: 'User created with tokens saved to user' });
+    }).catch((error_message) => {
+      res.status(500).json({ error_message });
+    });
+    // }
   });
 };
 
