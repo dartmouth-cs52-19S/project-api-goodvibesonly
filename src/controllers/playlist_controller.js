@@ -4,6 +4,7 @@ import Playlist from '../models/playlist_model';
 const API_SEARCH_URL = 'https://api.spotify.com/v1/search';
 const API_KEY = '9d4dc8d26d874e62a8fd2168be45d121';
 const API_PLAYLIST_URL = 'https://api.spotify.com/v1/playlists';
+const API_TRACK_URL = 'https://api.spotify.com/v1/tracks';
 
 export const getPlaylists = (req, res) => {
   Playlist.find({})
@@ -128,6 +129,18 @@ export const getPlaylistsFromSpotify = (req, res) => {
 };
 
 // Fetches tracks from Spotify API based on the track spotify // id
+// takes a param req.params.id, which is the id of the track you want to get
 export const getTrackFromSpotify = (req, res) => {
   // API calls here
+
+  return new Promise((resolve, reject) => {
+    axios.get(`${API_TRACK_URL}/${req.params.id}`, { headers: { authorization: 'BQBJSlfhZJQODsxWsQRmNC6F7DFXZkVQxPrCPlYuyUx5BWc00WgZWSEG9Pa2JcxC0yS6aZ5-w5pWFs7PY8WpBOMptbPhtMfwsRKKUpnJt1P924WdLslHBl4Lu6K9LeygjPtUzAMraCVuWCuBVjQ' } })
+      .then((response) => {
+        res.json(response);
+      })
+      .catch((error) => {
+        console.log(`spotify api error: ${error}`);
+        reject(error);
+      });
+  });
 };
