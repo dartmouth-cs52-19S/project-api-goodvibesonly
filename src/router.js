@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as UserController from './controllers/user_controller';
 // import * as Playlists from './controllers/playlist_controller';
 import * as Player from './controllers/player_controller';
+import * as Playlists from './controllers/playlist_controller';
 // import { /* requireAuth, */ requireSignin } from './services/passport';
 
 const router = Router();
@@ -20,10 +21,15 @@ router.route('/auth')
   .post(UserController.auth)
   .get(UserController.auth);
 
-/*
+
 router.route('/playlists')
-  .post(Playlists.createPost)
-  .get(Playlists.getPosts);
-*/
+  .post(Playlists.createPlaylist)
+  .get(Playlists.getPlaylists);
+
+
+router.route('/playlists/:id')
+  .put(/* requireAuth, */ Playlists.addSong)
+  .get(Playlists.getPlaylist)
+  .delete(/* requireAuth, */Playlists.deletePlaylist);
 
 export default router;

@@ -6,6 +6,7 @@ const API_KEY = '9d4dc8d26d874e62a8fd2168be45d121';
 const API_PLAYLIST_URL = 'https://api.spotify.com/v1/playlists';
 const API_PLAYER_URL = 'https://api.spotify.com/v1/me/player';
 const token = 'Bearer BQCCiW2xxvjz8gVFyf_9T7HB8ekzsh0PAjn44_Uu0MUmO30N-y4pNKw7jfeYdeoRKFoXAhY9OCiXH23vfS_rPqcRK33JM10K4HZ12bQM70cCFQ1K-ckFkjyUGWSZZN9_MQxOMfBJGpQQPmLPecxnnJWIJjq6nLykQXp4K2w8';
+const API_TRACK_URL = 'https://api.spotify.com/v1/tracks';
 
 export const getPlaylists = (req, res) => {
   Playlist.find({})
@@ -42,6 +43,14 @@ export const activatePlaylist = (req, res) => {
   // Data in req:
   // - req.body.lat
   // - req.body.lng
+  // - req.params.id
+  Playlist.findById(req.params.id).lean().populate('author').then((playlist) => {
+    playlist.location.push(req.body.lat);
+    playlist.location.push(req.body.long);
+  })
+    .catch((error) => {
+      res.json({ error: error.message });
+    });
 };
 
 export const createPlaylist = (req, res) => {
@@ -60,7 +69,7 @@ export const createPlaylist = (req, res) => {
 
   const playlist = new Playlist();
   playlist.title = req.body.title;
-  playlist.author = req.body.userId;
+  // playlist.author = req.body.userId;
   //   playlist.songs= unsure
 
   const params = {
@@ -68,7 +77,7 @@ export const createPlaylist = (req, res) => {
   };
   // items[]track.id
   return new Promise((resolve, reject) => {
-    axios.get(`${API_PLAYLIST_URL}/${req.params.playlistid}/tracks`, { headers: { authorization: 'BQBJSlfhZJQODsxWsQRmNC6F7DFXZkVQxPrCPlYuyUx5BWc00WgZWSEG9Pa2JcxC0yS6aZ5-w5pWFs7PY8WpBOMptbPhtMfwsRKKUpnJt1P924WdLslHBl4Lu6K9LeygjPtUzAMraCVuWCuBVjQ' } }, { params })
+    axios.get(`${API_PLAYLIST_URL}/${req.params.playlistid}/tracks`, { headers: { authorization: 'BQDJGwuXR34oWrBMH5wkQ3KNaUhaumSDYUwtfjEzfrgY5S86a0jkAJBrbicE4BdQpgS0HYxZ8do6yDoXUGovfQoqNGLwwOHrXo-i4o10DF5nwANe8LW7GgfosReUmqtru5VNynz54XAxT7RD6yQ' } }, { params })
       .then((response) => {
         const firstSeeds = response.items;
         firstSeeds.map((song, key) => playlist.songs.push(song.track.id));
@@ -90,10 +99,13 @@ export const createPlaylist = (req, res) => {
 };
 
 export const addSong = (req, res) => {
-  // Adds a spotify track id to a playlist in our mongo DB
-  // Data in req:
-  // - req.params.playlistid
-  // - req.body.trackId
+  Playlist.findById(req.params.playlistid)
+    .then((result) => {
+      result.songs.push(req.params.trackId);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 // ------------------- SPOTIFY API RELATED FUNCTIONS ------------------------ //
@@ -119,8 +131,20 @@ export const getPlaylistsFromSpotify = (req, res) => {
 };
 
 // Fetches tracks from Spotify API based on the track spotify // id
+// takes a param req.params.id, which is the id of the track you want to get
 export const getTrackFromSpotify = (req, res) => {
   // API calls here
+
+  return new Promise((resolve, reject) => {
+    axios.get(`${API_TRACK_URL}/${req.params.id}`, { headers: { authorization: 'BQDJGwuXR34oWrBMH5wkQ3KNaUhaumSDYUwtfjEzfrgY5S86a0jkAJBrbicE4BdQpgS0HYxZ8do6yDoXUGovfQoqNGLwwOHrXo-i4o10DF5nwANe8LW7GgfosReUmqtru5VNynz54XAxT7RD6yQ' } })
+      .then((response) => {
+        res.json(response);
+      })
+      .catch((error) => {
+        console.log(`spotify api error: ${error}`);
+        reject(error);
+      });
+  });
 };
 
 export const getPlayState = (req, res) => {
