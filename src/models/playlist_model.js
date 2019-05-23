@@ -4,10 +4,10 @@ import mongoose, { Schema } from 'mongoose';
 
 const PlaylistSchema = new Schema({
   title: { type: String, unique: true, lowercase: true },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  // author: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User',
+  // },
   songs: [{
     songid: String,
   }],

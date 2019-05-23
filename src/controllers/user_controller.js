@@ -41,7 +41,7 @@ export const auth = (req, res, next) => {
   // this is authentication for a new user
   // TODO: handle processes for returning users
   const code = req.query.code || null;
-  const state = req.query.state || null;
+  // const state = req.query.state || null;
 
   const user = new User();
   user.code = code;

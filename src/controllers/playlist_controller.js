@@ -39,8 +39,8 @@ export const activatePlaylist = (req, res) => {
   // in req
   //
   // Data in req:
-  // - req.params.lat
-  // - req.params.lng
+  // - req.body.lat
+  // - req.body.lng
   // - req.params.id
   Playlist.findById(req.params.id).lean().populate('author').then((playlist) => {
     playlist.location.push(req.body.lat);
@@ -67,7 +67,7 @@ export const createPlaylist = (req, res) => {
 
   const playlist = new Playlist();
   playlist.title = req.body.title;
-  playlist.author = req.body.userId;
+  // playlist.author = req.body.userId;
   //   playlist.songs= unsure
 
   const params = {
@@ -75,7 +75,7 @@ export const createPlaylist = (req, res) => {
   };
   // items[]track.id
   return new Promise((resolve, reject) => {
-    axios.get(`${API_PLAYLIST_URL}/${req.params.playlistid}/tracks`, { headers: { authorization: 'BQBJSlfhZJQODsxWsQRmNC6F7DFXZkVQxPrCPlYuyUx5BWc00WgZWSEG9Pa2JcxC0yS6aZ5-w5pWFs7PY8WpBOMptbPhtMfwsRKKUpnJt1P924WdLslHBl4Lu6K9LeygjPtUzAMraCVuWCuBVjQ' } }, { params })
+    axios.get(`${API_PLAYLIST_URL}/${req.params.playlistid}/tracks`, { headers: { authorization: 'BQDJGwuXR34oWrBMH5wkQ3KNaUhaumSDYUwtfjEzfrgY5S86a0jkAJBrbicE4BdQpgS0HYxZ8do6yDoXUGovfQoqNGLwwOHrXo-i4o10DF5nwANe8LW7GgfosReUmqtru5VNynz54XAxT7RD6yQ' } }, { params })
       .then((response) => {
         const firstSeeds = response.items;
         firstSeeds.map((song, key) => playlist.songs.push(song.track.id));
@@ -134,7 +134,7 @@ export const getTrackFromSpotify = (req, res) => {
   // API calls here
 
   return new Promise((resolve, reject) => {
-    axios.get(`${API_TRACK_URL}/${req.params.id}`, { headers: { authorization: 'BQBJSlfhZJQODsxWsQRmNC6F7DFXZkVQxPrCPlYuyUx5BWc00WgZWSEG9Pa2JcxC0yS6aZ5-w5pWFs7PY8WpBOMptbPhtMfwsRKKUpnJt1P924WdLslHBl4Lu6K9LeygjPtUzAMraCVuWCuBVjQ' } })
+    axios.get(`${API_TRACK_URL}/${req.params.id}`, { headers: { authorization: 'BQDJGwuXR34oWrBMH5wkQ3KNaUhaumSDYUwtfjEzfrgY5S86a0jkAJBrbicE4BdQpgS0HYxZ8do6yDoXUGovfQoqNGLwwOHrXo-i4o10DF5nwANe8LW7GgfosReUmqtru5VNynz54XAxT7RD6yQ' } })
       .then((response) => {
         res.json(response);
       })
