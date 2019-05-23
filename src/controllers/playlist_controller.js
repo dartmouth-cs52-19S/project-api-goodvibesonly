@@ -38,8 +38,16 @@ export const activatePlaylist = (req, res) => {
   // in req
   //
   // Data in req:
-  // - req.body.lat
-  // - req.body.lng
+  // - req.params.lat
+  // - req.params.lng
+  // - req.params.id
+  Playlist.findById(req.params.id).lean().populate('author').then((playlist) => {
+    playlist.location.push(req.params.lat);
+    playlist.location.push(req.params.long);
+  })
+    .catch((error) => {
+      res.json({ error: error.message });
+    });
 };
 
 export const createPlaylist = (req, res) => {
