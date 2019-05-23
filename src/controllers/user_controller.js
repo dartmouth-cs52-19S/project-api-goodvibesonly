@@ -18,7 +18,7 @@ const spotifyEndpoint = 'https://accounts.spotify.com/api/token';
 
 const client_id = 'b4a7ad189bdb424aad1d1a4773a6ddf6'; // Your client id
 const client_secret = 'e9dc54316afb430b986542e2b431b6a0'; // Your secret
-const redirect_uri = 'https://good-vibes-only.herokuapp.com/api'; // Your redirect uri
+const redirect_uri = 'https://good-vibes-only.herokuapp.com/api/auth'; // Your redirect uri
 const request = require('request'); // "Request" library
 const querystring = require('querystring'); // "querystring" library
 
