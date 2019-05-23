@@ -84,9 +84,9 @@ export const auth = (req, res, next) => {
     localAccessToken = body.access_token;
 
     user.save().then(() => {
-      res.json({ message: 'User created with tokens saved to user' });
+      res.redirect(`${redirect_uri}/done?message=authSuccess?token=${body.access_token}`);
     }).catch((error_message) => {
-      res.status(500).json({ error_message });
+      res.redirect(`${redirect_uri}/done?message=authFailure`);
     });
     // }
   });
