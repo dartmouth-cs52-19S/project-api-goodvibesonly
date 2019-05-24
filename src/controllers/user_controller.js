@@ -90,6 +90,7 @@ export const auth = (req, res, next) => {
       console.log('GETTING USER PROFILE');
 
       User.findOne({ spotifyId: resp.data.id }).then((user_found) => {
+        console.log('USER EXISTS');
         const id = user_found._id;
 
         User.findByIdAndUpdate(id, {
