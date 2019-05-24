@@ -13,9 +13,9 @@ router.get('/', (req, res) => {
 
 // your routes will go here
 router.post('/signin', UserController.signin);
-router.get('/playstate', Player.getPlayState);
-router.put('/play', Player.sendPlay);
-router.put('/pause', Player.sendPause);
+router.get('/playstate/:token', Player.getPlayState);
+router.put('/play/:token', Player.sendPlay);
+router.put('/pause/:token', Player.sendPause);
 
 router.route('/auth')
   .post(UserController.auth)
