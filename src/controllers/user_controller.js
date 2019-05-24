@@ -87,6 +87,7 @@ export const auth = (req, res, next) => {
 
     axios.get(`${user_profile_url}`, { headers: { authorization: `Bearer ${body.access_token}` } }).then((resp) => {
       user.spotifyId = resp.data.id;
+      console.log('GETTING USER PROFILE');
 
       user.save().then(() => {
         console.log('USER MONGO ID', user._id);
