@@ -28,7 +28,7 @@ const stateKey = 'spotify_auth_state'; // from the web-api-auth-example
 let localAccessToken;
 
 export const signin = (req, res, next) => {
-  const scopes = 'user-read-private user-read-email';
+  const scopes = 'user-read-private user-read-email user-modify-playback-state user-read-playback-state';
   res.redirect(`${'https://accounts.spotify.com/authorize'
   + '?response_type=code'
   + '&client_id='}${client_id
@@ -87,12 +87,29 @@ export const auth = (req, res, next) => {
 
     axios.get(`${user_profile_url}`, { headers: { authorization: `Bearer ${body.access_token}` } }).then((resp) => {
       user.spotifyId = resp.data.id;
+      console.log('GETTING USER PROFILE');
 
-      user.save().then(() => {
-        console.log(user._id);
-        res.redirect(`${redirect_uri}/done?message=authSuccess?token=${body.access_token}`);
-      }).catch((error_message) => {
-        res.redirect(`${redirect_uri}/done?message=authFailure`);
+      User.findOne({ spotifyId: resp.data.id }).then((user_found) => {
+        console.log('USER EXISTS');
+        const id = user_found._id;
+
+        User.findByIdAndUpdate(id, {
+          access_token: body.access_token, refresh_token: body.refresh_token,
+        }).then((update_response) => {
+          console.log('USER UPDATE SUCCESSFUL');
+          res.redirect(`${redirect_uri}/done?message=authSuccess?token=${body.access_token}?userid=${id}`);
+        }).catch((update_err) => {
+          console.log('USER UPDATE FAILED', update_err);
+        });
+      }).catch((user_error) => {
+        console.log('NEW USER');
+
+        user.save().then(() => {
+          console.log('USER MONGO ID', user._id);
+          res.redirect(`${redirect_uri}/done?message=authSuccess?token=${body.access_token}?userid=${user._id}`);
+        }).catch((error_message) => {
+          res.redirect(`${redirect_uri}/done?message=authFailure`);
+        });
       });
     }).catch((err) => {
       console.log(err);
