@@ -89,7 +89,7 @@ export const auth = (req, res, next) => {
       user.spotifyId = resp.data.id;
 
       user.save().then(() => {
-        console.log(user._id);
+        console.log('USER MONGO ID', user._id);
         res.redirect(`${redirect_uri}/done?message=authSuccess?token=${body.access_token}`);
       }).catch((error_message) => {
         res.redirect(`${redirect_uri}/done?message=authFailure`);
