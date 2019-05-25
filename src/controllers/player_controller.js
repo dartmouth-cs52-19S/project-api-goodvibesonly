@@ -14,8 +14,12 @@ export const getPlayState = (req, res) => {
 };
 
 export const sendPlay = (req, res) => {
+  const params = {
+    uris: 'spotify:track:4iV5W9uYEdYUVa79Axb7Rh',
+  };
+
   console.log('entered backend play ', req.params.token);
-  axios.put(`${API_PLAYER_URL}/play`, { headers: { authorization: `Bearer ${req.params.token}` } })
+  axios.put(`${API_PLAYER_URL}/play`, { headers: { authorization: `Bearer ${req.params.token}` }, params })
     .then((response) => {
       console.log(JSON.stringify(response.data));
     })
