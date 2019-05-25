@@ -25,7 +25,6 @@ const request = require('request'); // "Request" library
 // const querystring = require('querystring'); // "querystring" library
 
 const stateKey = 'spotify_auth_state'; // from the web-api-auth-example
-let localAccessToken;
 
 export const signin = (req, res, next) => {
   const scopes = 'user-read-private user-read-email user-modify-playback-state user-read-playback-state';
@@ -83,7 +82,6 @@ export const auth = (req, res, next) => {
     const user = new User();
     user.access_token = body.access_token;
     user.refresh_token = body.refresh_token;
-    localAccessToken = body.access_token;
 
     axios.get(`${user_profile_url}`, { headers: { authorization: `Bearer ${body.access_token}` } }).then((resp) => {
       user.spotifyId = resp.data.id;
@@ -100,6 +98,7 @@ export const auth = (req, res, next) => {
           res.redirect(`${redirect_uri}/done?message=authSuccess?token=${body.access_token}?userid=${id}`);
         }).catch((update_err) => {
           console.log('USER UPDATE FAILED', update_err);
+          res.redirect(`${redirect_uri}/done?message=authFailure`);
         });
       }).catch((user_error) => {
         console.log('NEW USER');
@@ -115,37 +114,4 @@ export const auth = (req, res, next) => {
       console.log(err);
     });
   });
-};
-
-// New get method
-export const getAuth = (req, res) => {
-  res.json({ localAccessToken });
-};
-
-/*
-OLD AUTH
-export const auth = (req, res, next) => {
-  // this is authentication for a new user
-  // TODO: handle processes for returning users
-  const code = req.query.code || null;
-  // const state = req.query.state || null;
-
-  const user = new User();
-  user.code = code;
-
-  user.save()
-    .then(() => {
-      getToken(code);
-      res.json({ message: 'User created and code saved to user' });
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
-};
-
-*/
-
-export const signup = (req, res, next) => {
-  // TODO: fill out function
-
 };
