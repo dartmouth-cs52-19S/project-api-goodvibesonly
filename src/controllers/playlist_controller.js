@@ -22,7 +22,7 @@ export const getPlaylists = (req, res) => {
 
 export const getPlaylist = (req, res) => {
   Playlist.findById(req.params.id).lean().then((playlist) => {
-    res.json({ playlist });
+    res.json({ playlist: playlist.result[0] });
   })
     .catch((error) => {
       res.json({ error: error.message });
