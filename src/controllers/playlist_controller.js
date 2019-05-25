@@ -22,6 +22,7 @@ export const getPlaylists = (req, res) => {
 
 export const getPlaylist = (req, res) => {
   Playlist.findById(req.params.id).lean().then((playlist) => {
+    console.log('PLAYLIST RESULT', playlist.result[0]);
     res.json({ playlist: playlist.result[0] });
   })
     .catch((error) => {
