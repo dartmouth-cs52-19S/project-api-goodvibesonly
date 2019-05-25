@@ -3,7 +3,6 @@ import axios from 'axios';
 const API_PLAYER_URL = 'https://api.spotify.com/v1/me/player';
 
 export const getPlayState = (req, res) => {
-  console.log('entered backend getPlayState', req.params.token);
   axios.get(`${API_PLAYER_URL}/currently-playing`, { headers: { authorization: `Bearer ${req.params.token}` } })
     .then((response) => {
       res.send(response.data);
@@ -15,6 +14,7 @@ export const getPlayState = (req, res) => {
 };
 
 export const sendPlay = (req, res) => {
+  console.log('entered backend play ', req.params.token);
   axios.put(`${API_PLAYER_URL}/play`, { headers: { authorization: `Bearer ${req.params.token}` } })
     .then((response) => {
       console.log(JSON.stringify(response.data));
@@ -25,6 +25,7 @@ export const sendPlay = (req, res) => {
 };
 
 export const sendPause = (req, res) => {
+  console.log('entered backend pause ', req.params.token);
   axios.put(`${API_PLAYER_URL}/pause`, { headers: { authorization: `Bearer ${req.params.token}` } })
     .then((response) => {
       console.log(JSON.stringify(response.data));
