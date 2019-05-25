@@ -71,6 +71,7 @@ export const createPlaylist = (req, res) => {
   const playlist = new Playlist();
   playlist.title = req.body.title;
   playlist.author = req.body.userId;
+  playlist.location = [req.body.lat, req.body.lng];
 
   User.findById(req.body.userId).then((user) => {
     const params = {
