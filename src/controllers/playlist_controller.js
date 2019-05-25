@@ -21,7 +21,7 @@ export const getPlaylists = (req, res) => {
 
 
 export const getPlaylist = (req, res) => {
-  Playlist.findById(req.params.id).lean().populate('author').then((playlist) => {
+  Playlist.findById(req.params.id).lean().then((playlist) => {
     res.json({ playlist });
   })
     .catch((error) => {
