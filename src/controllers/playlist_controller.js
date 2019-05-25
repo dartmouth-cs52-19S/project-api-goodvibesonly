@@ -77,6 +77,8 @@ export const createPlaylist = (req, res) => {
       limit: 5,
     };
 
+    console.log('token in backend', user.access_token);
+
     axios.get(`${API_PLAYLIST_URL}/${req.body.spotifyId}/tracks`, { headers: { authorization: `Bearer ${user.access_token}` }, params })
       .then((response) => {
         const firstSeeds = response.data.items;
@@ -86,7 +88,6 @@ export const createPlaylist = (req, res) => {
         });
 
         console.log('songs', playlist.songs[0]);
-        console.log('songs logged');
 
         playlist.save()
           .then((result) => {
