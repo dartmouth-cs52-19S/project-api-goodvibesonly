@@ -24,22 +24,35 @@ export const sendPlay = (req, res) => {
   //   .catch((error) => {
   //     console.log(`spotify api error: ${error}`);
   //   });
-  const authOptions = {
-    url: 'https://api.spotify.com/v1/me/player',
-    headers: {
-      // eslint-disable-next-line no-buffer-constructor
-      Authorization: `Bearer ${req.params.token}`,
-    },
-    json: true,
-  };
+  axios.get(`${API_PLAYER_URL}/devices`, { headers: { authorization: `Bearer ${req.params.token}` } })
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      // eslint-disable-next-line camelcase
+      const dev_id = response.data.devices[0].id;
+      console.log(dev_id);
+      const authOptions = {
+        url: 'https://api.spotify.com/v1/me/player',
+        headers: {
+          // eslint-disable-next-line no-buffer-constructor
+          Authorization: `Bearer ${req.params.token}`,
+        },
+        params: {
+          device_id: dev_id,
+        },
+        json: true,
+      };
 
-  request.put(authOptions, (error, response, body) => {
-    if (!error) {
-      console.log(response);
-    } else {
-      console.log(error);
-    }
-  });
+      request.put(authOptions, (error, r, body) => {
+        if (!error) {
+          console.log(r);
+        } else {
+          console.log(error);
+        }
+      });
+    })
+    .catch((error) => {
+      console.log(`spotify api error: ${error}`);
+    });
 };
 
 export const sendPause = (req, res) => {
