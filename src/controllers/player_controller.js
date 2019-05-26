@@ -36,7 +36,7 @@ export const sendPlay = (req, res) => {
           // eslint-disable-next-line no-buffer-constructor
           Authorization: `Bearer ${req.params.token}`,
         },
-        params: {
+        qs: {
           // eslint-disable-next-line quote-props
           'device_id': dev_id,
           // eslint-disable-next-line quote-props
