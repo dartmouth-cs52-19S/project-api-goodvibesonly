@@ -20,7 +20,7 @@ export const sendPlay = (req, res) => {
       console.log(JSON.stringify(response.data));
     })
     .catch((error) => {
-      console.log(`spotify api error: ${JSON.stringify(error)}`);
+      console.log(`spotify api error: ${error}`);
     });
 };
 
@@ -31,6 +31,6 @@ export const sendPause = (req, res) => {
       console.log(JSON.stringify(response.data));
     })
     .catch((error) => {
-      console.log(`spotify api error: ${JSON.stringify(error)}`);
+      console.log(`spotify api error: ${error}`);
     });
 };
