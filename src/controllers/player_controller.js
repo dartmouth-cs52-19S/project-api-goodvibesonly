@@ -37,7 +37,10 @@ export const sendPlay = (req, res) => {
           Authorization: `Bearer ${req.params.token}`,
         },
         params: {
-          device_id: dev_id,
+          // eslint-disable-next-line quote-props
+          'device_id': dev_id,
+          // eslint-disable-next-line quote-props
+          'device_ids': dev_id,
         },
         json: true,
       };
