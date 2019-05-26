@@ -31,7 +31,7 @@ export const sendPlay = (req, res) => {
       const dev_id = response.data.devices[0].id;
       console.log(dev_id);
       const authOptions = {
-        url: 'https://api.spotify.com/v1/me/player',
+        url: 'https://api.spotify.com/v1/me/player/play',
         headers: {
           // eslint-disable-next-line no-buffer-constructor
           Authorization: `Bearer ${req.params.token}`,
