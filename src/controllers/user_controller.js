@@ -115,3 +115,7 @@ export const auth = (req, res, next) => {
     });
   });
 };
+
+export const loading = (req, res, next) => {
+  res.render('<!DOCTYPE html><html lang="en" dir="ltr"><head><meta charset="utf-8"><title></title></head><body>Loading</body></html>');
+};
