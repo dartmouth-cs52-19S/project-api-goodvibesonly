@@ -111,7 +111,7 @@ export const addSong = (req, res) => {
   Playlist.findById(req.params.id)
     .then((result) => {
       console.log('SONGS', result.songs);
-      result.songs.push(req.body.trackId);
+      result.songs.push({ songid: req.body.trackId });
       console.log('SONGS AFTER PUSH', result.songs);
 
       Playlist.findByIdAndUpdate(req.params.id, {
