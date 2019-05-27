@@ -110,13 +110,17 @@ export const createPlaylist = (req, res) => {
 export const addSong = (req, res) => {
   Playlist.findById(req.params.id)
     .then((result) => {
+      console.log('SONGS', result.songs);
       result.songs.push(req.body.trackId);
+      console.log('SONGS AFTER PUSH', result.songs);
 
       Playlist.findByIdAndUpdate(req.params.id, {
         songs: result.songs,
       }).then((response) => {
+        console.log('ENTERING SUCCESSFULLY UPDATED');
         res.json({ message: 'successfully updated!' });
       }).catch((updateError) => {
+        console.log('UPDATE ERROR', updateError);
         res.status(500).json(updateError);
       });
     })
