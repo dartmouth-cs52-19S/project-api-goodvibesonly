@@ -110,7 +110,7 @@ export const createPlaylist = (req, res) => {
 export const addSong = (req, res) => {
   Playlist.findById(req.params.playlistid)
     .then((result) => {
-      result.songs.push(req.params.trackId);
+      result.songs.push(req.body.trackId);
     })
     .catch((error) => {
       res.status(500).json({ error });
