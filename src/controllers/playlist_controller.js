@@ -85,7 +85,7 @@ export const createPlaylist = (req, res) => {
         const firstSeeds = response.data.items;
         console.log(response.data.items[0].track.id);
         firstSeeds.map((song, key) => {
-          return playlist.songs.push({ songid: song.track.id });
+          return playlist.songs.push({ songid: song.track.id, name: song.track.name, artist: song.track.artists[0].name });
         });
 
         console.log('songs', playlist.songs[0]);
