@@ -25,7 +25,7 @@ export const getPlaylist = (req, res) => {
     res.json({ playlist });
   })
     .catch((error) => {
-      res.json({ error: error.message });
+      res.status(401).send(error);
     });
 };
 
