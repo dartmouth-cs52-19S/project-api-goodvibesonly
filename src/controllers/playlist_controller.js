@@ -108,7 +108,7 @@ export const createPlaylist = (req, res) => {
 };
 
 export const addSong = (req, res) => {
-  Playlist.findById(req.params.playlistid)
+  Playlist.findById(req.params.id)
     .then((result) => {
       result.songs.push(req.body.trackId);
 
