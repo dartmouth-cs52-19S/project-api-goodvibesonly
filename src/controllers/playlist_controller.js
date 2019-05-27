@@ -23,10 +23,10 @@ export const getPlaylists = (req, res) => {
 export const getPlaylist = (req, res) => {
   Playlist.findById(req.params.id).lean().then((playlist) => {
     res.json({ playlist });
-  })
-    .catch((error) => {
-      res.status(401).send(error);
-    });
+  }).catch((error) => {
+    console.log('ERROR IN FETCH', error);
+    res.status(404).send(error);
+  });
 };
 
 export const deletePlaylist = (req, res) => {
