@@ -21,15 +21,13 @@ router.route('/auth')
   .post(UserController.auth)
   .get(UserController.auth);
 
-
-router.route('/playlists')
-  .post(Playlists.createPlaylist)
-  .get(Playlists.getPlaylists);
-
-
 router.route('/playlists/:id')
   .put(/* requireAuth, */ Playlists.addSong)
   .get(Playlists.getPlaylist)
   .delete(/* requireAuth, */Playlists.deletePlaylist);
+
+router.route('/playlists')
+  .post(Playlists.createPlaylist)
+  .get(Playlists.getPlaylists);
 
 export default router;
