@@ -111,6 +111,14 @@ export const addSong = (req, res) => {
   Playlist.findById(req.params.playlistid)
     .then((result) => {
       result.songs.push(req.body.trackId);
+
+      Playlist.findByIdAndUpdate(req.params.id, {
+        songs: result.songs,
+      }).then((response) => {
+        res.json({ message: 'successfully updated!' });
+      }).catch((updateError) => {
+        res.status(500).json(updateError);
+      });
     })
     .catch((error) => {
       res.status(500).json({ error });
