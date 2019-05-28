@@ -17,7 +17,7 @@ export const getPlayState = (req, res) => {
 export const sendPlaySong = (req, res) => {
   axios.get(`${API_PLAYER_URL}/devices`, { headers: { authorization: `Bearer ${req.params.token}` } })
     .then((response) => {
-      console.log('SONG ID', req.body.song_id);
+      console.log('SONG ID', req.params.song_id);
       const devId = response.data.devices[0].id;
       const authOptions = {
         url: 'https://api.spotify.com/v1/me/player/play',
@@ -31,7 +31,7 @@ export const sendPlaySong = (req, res) => {
           // eslint-disable-next-line quote-props
           'device_ids': devId,
           // eslint-disable-next-line quote-props
-          'context_uri': `spotify:track:${req.body.song_id}`,
+          'context_uri': `spotify:track:${req.params.song_id}`,
         },
         json: true,
       };

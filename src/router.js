@@ -16,7 +16,7 @@ router.post('/signin', UserController.signin);
 router.get('/playstate/:token', Player.getPlayState);
 router.put('/play/:token', Player.sendPlay);
 router.put('/pause/:token', Player.sendPause);
-router.put('/playsong/:token', Player.sendPlaySong);
+router.put('/playsong/:token/:song_id', Player.sendPlaySong);
 
 router.route('/auth')
   .post(UserController.auth)
