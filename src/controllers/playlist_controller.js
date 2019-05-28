@@ -8,6 +8,7 @@ const API_PLAYLIST_URL = 'https://api.spotify.com/v1/playlists';
 const API_PLAYER_URL = 'https://api.spotify.com/v1/me/player';
 const token = 'Bearer BQCCiW2xxvjz8gVFyf_9T7HB8ekzsh0PAjn44_Uu0MUmO30N-y4pNKw7jfeYdeoRKFoXAhY9OCiXH23vfS_rPqcRK33JM10K4HZ12bQM70cCFQ1K-ckFkjyUGWSZZN9_MQxOMfBJGpQQPmLPecxnnJWIJjq6nLykQXp4K2w8';
 const API_TRACK_URL = 'https://api.spotify.com/v1/tracks';
+const API_USER_URL = 'https://api.spotify.com/v1/users';
 
 export const getPlaylists = (req, res) => {
   Playlist.find({})
@@ -99,6 +100,14 @@ export const createPlaylist = (req, res) => {
             console.log(error);
             res.status(500).json({ error });
           });
+
+        axios.post(`${API_USER_URL}/${user.spotifyId}/playlists`, { headers: { authorization: `Bearer ${user.access_token}`, 'Content-type': 'application/json' } }).then((playlistResponse) => {
+          console.log('NEW PLAYLIST IN SPOTIFY CREATED');
+          const playlistId = playlistResponse.data.id;
+          console.log('playlistId', playlistId);
+        }).catch((creationError) => {
+          console.log(creationError);
+        });
       })
       .catch((error) => {
         console.log(`spotify api error: ${error}`);
