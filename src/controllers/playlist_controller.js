@@ -92,6 +92,7 @@ export const createPlaylist = (req, res) => {
 
         playlist.save()
           .then((result) => {
+            console.log('RESULT IN CREATE', result);
             res.json({ message: 'Playlist created!', playlistId: playlist._id, playlist: result });
           })
           .catch((error) => {
