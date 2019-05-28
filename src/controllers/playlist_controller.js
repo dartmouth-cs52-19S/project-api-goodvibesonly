@@ -91,20 +91,35 @@ export const createPlaylist = (req, res) => {
 
         console.log('songs', playlist.songs[0]);
 
-        playlist.save()
-          .then((result) => {
-            console.log('RESULT IN CREATE', result);
-            res.json({ message: 'Playlist created!', playlistId: playlist._id, playlist: JSON.stringify(result) });
-          })
-          .catch((error) => {
-            console.log(error);
-            res.status(500).json({ error });
-          });
-
         axios.post(`${API_USER_URL}/${user.spotifyId}/playlists`, { headers: { authorization: `Bearer ${user.access_token}`, 'Content-type': 'application/json' } }).then((playlistResponse) => {
           console.log('NEW PLAYLIST IN SPOTIFY CREATED');
           const playlistId = playlistResponse.data.id;
           console.log('playlistId', playlistId);
+
+          playlist.spotifyId = playlistId;
+
+          playlist.save()
+            .then((result) => {
+              console.log('RESULT IN CREATE', result);
+
+              const uris = [];
+
+              playlist.songs.map((song) => {
+                return uris.push(`spotify:track:${song.songid}`);
+              });
+
+              axios.post(`${API_PLAYLIST_URL}/${playlistId}/tracks`, { headers: { authorization: `Bearer ${user.access_token}`, uris } }).then((addTracksResponse) => {
+                console.log('successfully added');
+                res.json({ message: 'Playlist created!', playlistId: playlist._id, playlist: JSON.stringify(result) });
+              }).catch((addTracksError) => {
+                console.log(addTracksError);
+                res.status(400).json({ addTracksError });
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              res.status(500).json({ error });
+            });
         }).catch((creationError) => {
           console.log(creationError);
         });
