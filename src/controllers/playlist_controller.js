@@ -91,6 +91,7 @@ export const createPlaylist = (req, res) => {
 
         console.log('songs', playlist.songs[0]);
 
+        // New Stuff
         axios.post(`${API_USER_URL}/${user.spotifyId}/playlists`, { headers: { authorization: `Bearer ${user.access_token}`, 'Content-type': 'application/json' } }).then((playlistResponse) => {
           console.log('NEW PLAYLIST IN SPOTIFY CREATED');
           const playlistId = playlistResponse.data.id;
