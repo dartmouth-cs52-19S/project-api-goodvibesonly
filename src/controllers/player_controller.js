@@ -31,7 +31,7 @@ export const sendPlaySong = (req, res) => {
           // eslint-disable-next-line quote-props
           'device_ids': devId,
           // eslint-disable-next-line quote-props
-          'context_uri': `spotify:track:${req.params.song_id}`,
+          'uris': [`spotify:track:${req.params.song_id}`],
         },
         json: true,
       };
