@@ -8,7 +8,6 @@ const API_PLAYLIST_URL = 'https://api.spotify.com/v1/playlists';
 const API_PLAYER_URL = 'https://api.spotify.com/v1/me/player';
 const token = 'Bearer BQCCiW2xxvjz8gVFyf_9T7HB8ekzsh0PAjn44_Uu0MUmO30N-y4pNKw7jfeYdeoRKFoXAhY9OCiXH23vfS_rPqcRK33JM10K4HZ12bQM70cCFQ1K-ckFkjyUGWSZZN9_MQxOMfBJGpQQPmLPecxnnJWIJjq6nLykQXp4K2w8';
 const API_TRACK_URL = 'https://api.spotify.com/v1/tracks';
-const API_USER_URL = 'https://api.spotify.com/v1/users';
 
 export const getPlaylists = (req, res) => {
   Playlist.find({})
@@ -86,44 +85,22 @@ export const createPlaylist = (req, res) => {
         const firstSeeds = response.data.items;
         console.log(response.data.items[0].track.id);
         firstSeeds.map((song, key) => {
-          return playlist.songs.push({ songid: song.track.id, name: song.track.name, artist: song.track.artists[0].name });
+          return playlist.songs.push({
+            songid: song.track.id, name: song.track.name, artist: song.track.artists[0].name, duration: song.track.duration_ms,
+          });
         });
 
         console.log('songs', playlist.songs[0]);
 
-        // New Stuff
-        axios.post(`${API_USER_URL}/${user.spotifyId}/playlists`, { headers: { authorization: `Bearer ${user.access_token}`, 'Content-type': 'application/json' } }).then((playlistResponse) => {
-          console.log('NEW PLAYLIST IN SPOTIFY CREATED');
-          const playlistId = playlistResponse.data.id;
-          console.log('playlistId', playlistId);
-
-          playlist.spotifyId = playlistId;
-
-          playlist.save()
-            .then((result) => {
-              console.log('RESULT IN CREATE', result);
-
-              const uris = [];
-
-              playlist.songs.map((song) => {
-                return uris.push(`spotify:track:${song.songid}`);
-              });
-
-              axios.post(`${API_PLAYLIST_URL}/${playlistId}/tracks`, { headers: { authorization: `Bearer ${user.access_token}`, uris } }).then((addTracksResponse) => {
-                console.log('successfully added');
-                res.json({ message: 'Playlist created!', playlistId: playlist._id, playlist: JSON.stringify(result) });
-              }).catch((addTracksError) => {
-                console.log(addTracksError);
-                res.status(400).json({ addTracksError });
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-              res.status(500).json({ error });
-            });
-        }).catch((creationError) => {
-          console.log(creationError);
-        });
+        playlist.save()
+          .then((result) => {
+            console.log('RESULT IN CREATE', result);
+            res.json({ message: 'Playlist created!', playlistId: playlist._id, playlist: JSON.stringify(result) });
+          })
+          .catch((error) => {
+            console.log(error);
+            res.status(500).json({ error });
+          });
       })
       .catch((error) => {
         console.log(`spotify api error: ${error}`);
@@ -137,7 +114,9 @@ export const addSong = (req, res) => {
   Playlist.findById(req.params.id)
     .then((result) => {
       console.log('SONGS', result.songs);
-      result.songs.push({ songid: req.body.trackId, name: req.body.name, artist: req.body.artist });
+      result.songs.push({
+        songid: req.body.trackId, name: req.body.name, artist: req.body.artist, duration: req.body.duration,
+      });
       console.log('SONGS AFTER PUSH', result.songs);
 
       Playlist.findByIdAndUpdate(req.params.id, {

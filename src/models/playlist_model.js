@@ -9,6 +9,7 @@ const PlaylistSchema = new Schema({
     songid: String,
     name: String,
     artist: String,
+    duration: String,
   }],
   spotifyId: { type: String },
   location: { type: Array },
