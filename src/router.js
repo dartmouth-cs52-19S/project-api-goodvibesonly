@@ -4,7 +4,6 @@ import * as UserController from './controllers/user_controller';
 import * as Player from './controllers/player_controller';
 import * as Playlists from './controllers/playlist_controller';
 // import { /* requireAuth, */ requireSignin } from './services/passport';
-import * as Page from './controllers/loading_controller';
 
 const router = Router();
 
