@@ -4,6 +4,7 @@ import * as UserController from './controllers/user_controller';
 import * as Player from './controllers/player_controller';
 import * as Playlists from './controllers/playlist_controller';
 // import { /* requireAuth, */ requireSignin } from './services/passport';
+import * as Page from './controllers/loading_controller';
 
 const router = Router();
 
@@ -18,6 +19,9 @@ router.put('/play/:token', Player.sendPlay);
 router.put('/pause/:token', Player.sendPause);
 router.put('/playsong/:token/:song_id', Player.sendPlaySong);
 // router.put('/playplaylist/:token/:playlistid', Player.sendPlayPlaylist);
+
+router.get('/auth/done', Page.loading);
+
 
 router.route('/auth')
   .post(UserController.auth)
